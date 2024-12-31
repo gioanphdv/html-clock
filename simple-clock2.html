@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Clock</title>
+  <style>
+    
+    html {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('./nha-tho-chinh-toa-quy-nhon.jpeg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: red;
+      position: relative; /* add for firework scripts */
+    }
+    #countdown {
+      font-size: 15em;
+      /* display: flex; 
+      justify-content: center;
+      align-items: center; */
+      /* height: 90vh; */
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: rgba(0, 26, 255, 0.4); /* Transparent background */
+      color: brown; /* Text color */
+      padding: 20px; /* Padding around the text */
+      border-radius: 10px; /* Rounded corners */
+      z-index: 1; /* Firework - Place the countdown text above the background image */
+    }
+    #fireworks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* Disable mouse interaction */
+      z-index: 0; /* Firework - Place the fireworks below the countdown text */
+    }
+  </style>
+</head>
+<body id="body-image">
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      const target = new Date(document.getElementById('countdownTarget').value);
+      const difference = target - now + 1000; // add 1 second
+
+      if (difference > 0) {
+        const hours1 = String(Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        const minutes1 = String(Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        const seconds1 = String(Math.floor((difference % (1000 * 60)) / 1000)).padStart(2, '0');
+        document.getElementById('countdown').textContent = `${hours1}:${minutes1}:${seconds1}`;
+      } else {
+        document.getElementById('countdown').textContent = '00:00:00';
+        startFireworks(); // Firework - Start the fireworks when the countdown is over
+      }
+
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // initial call to display clock immediately
+
+    function startFireworks() {
+      const fireworksContainer = document.getElementById('fireworks');
+      fireworksContainer.innerHTML = ''; // Clear previous fireworks
+
+      for (let i = 0; i < 10; i++) {
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.left = `${Math.random() * 100}%`;
+        firework.style.top = `${Math.random() * 100}%`;
+        fireworksContainer.appendChild(firework);
+      }
+
+      setTimeout(() => {
+        fireworksContainer.innerHTML = ''; // Remove fireworks after animation
+      }, 5000); // Duration of the fireworks animation
+    }
+  </script>
+
+<style>
+  .firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    animation: explode 1s ease-out forwards;
+  }
+
+  @keyframes explode {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(10);
+      opacity: 0;
+    }
+  }
+</style>
+
+  <div id="fireworks"></div>
+
+  <div>
+    <div id="clock"></div>
+    <input type="datetime-local" id="countdownTarget" value="2025-01-01T00:00" />
+    <div id="countdown"></div>
+    GD - 2024
+  </div>
+</body>
+</html>
