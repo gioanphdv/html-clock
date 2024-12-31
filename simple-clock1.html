@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Clock</title>
+  <style>
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #countdown {
+      font-size: 5em;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 90vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      const target = new Date(document.getElementById('countdownTarget').value);
+      const difference = target - now + 1000; // add 1 second
+
+      if (difference > 0) {
+        const hours1 = String(Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        const minutes1 = String(Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        const seconds1 = String(Math.floor((difference % (1000 * 60)) / 1000)).padStart(2, '0');
+        document.getElementById('countdown').textContent = `${hours1}:${minutes1}:${seconds1}`;
+      } else {
+        document.getElementById('countdown').textContent = '00:00:00';
+      }
+
+      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // initial call to display clock immediately
+  </script>
+
+  <div>
+    <div id="clock"></div>
+    <input type="datetime-local" id="countdownTarget" />
+    <div id="countdown"></div>
+    Gioan Doan - 2024
+  </div>
+
+  <script>
+    // function updateCountdown() {
+      
+    //   const now = new Date();
+
+
+
+    // }
+
+    // document.getElementById('countdownTarget').addEventListener('change', updateCountdown);
+    // setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
